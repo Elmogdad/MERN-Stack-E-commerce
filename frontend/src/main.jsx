@@ -9,6 +9,7 @@ import store from './redux/store.js'
 
 // Auth
 import Login from './pages/Auth/Login.jsx';
+import Rigister from './pages/Auth/Rigister.jsx';
 
 
 
@@ -16,7 +17,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />} >
 
-    <Route path='/login' element={<Login/ >} />
+    <Route path='/login' element={<Login />} />
+    <Route path='/register' element={<Rigister />} />
     </Route>
   )
 )

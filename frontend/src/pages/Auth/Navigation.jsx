@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Navigation.css";
 import { useSelector, useDispatch } from "react-redux";
-import { useLoginMutation } from "../../redux/api/usersApiSlice";
+import { useLogoutMutation } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
 
 const Navigation = () => {
-  const { userInfo } = useSelector(state => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -29,13 +29,13 @@ const Navigation = () => {
   };
 
   const closeSidbar = () => {
-    setShowSidebar(false)
-  }
+    setShowSidebar(false);
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [logoutApiCall] = useLoginMutation();
+  const [logoutApiCall] = useLogoutMutation();
 
   const logoutHandler = async () => {
     try {
@@ -90,9 +90,117 @@ const Navigation = () => {
           onClick={toggleDropdown}
           className="flex items-center text-gray-8000 focus:outline-none"
         >
-        {userInfo ? <span className="text-white">{userInfo.username}</span> : (<></>)}
+          {userInfo ? (
+            <span className="text-white">{userInfo.username}</span>
+          ) : (
+            <></>
+          )}
+
+          {userInfo && (
+            <svg
+              xmlns="http:/www.w3.org/2000/svg"
+              className={`h-4 w-4 ml-1 ${
+                dropdownOpen ? "transform rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7-7-7"}
+              />
+            </svg>
+          )}
         </button>
+
+        {dropdownOpen && userInfo && (
+          <ul
+            className={`absoulte right-0 mt-2 mr-14 space-y-2 bg-white text-gray-600 ${
+              !userInfo.isAdmin ? "-top-20" : "-top-80"
+            }`}
+          >
+            {userInfo.isAdmin && (
+              <>
+                <li>
+                  <Link
+                    to="/admin/dashboard"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/productlist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Products
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/categorylist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Category
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/orderlist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/userlist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Users
+                  </Link>
+                  <Link
+                    to="/admin/profile"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/admin/logout"
+                    onClick={logoutHandler}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </>
+            )}
+            {userInfo && (
+              <>
+                   <Link
+                    to="/admin/profile"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/admin/logout"
+                    onClick={logoutHandler}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </Link>
+                
+              </>
+            )}
+          </ul>
+        )}
       </div>
+      {!userInfo && (
       <ul>
         <li>
           <Link
@@ -115,6 +223,7 @@ const Navigation = () => {
           </Link>
         </li>
       </ul>
+      )}
     </div>
   );
 };
