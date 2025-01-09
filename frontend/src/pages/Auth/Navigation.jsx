@@ -86,19 +86,18 @@ const Navigation = () => {
         </Link>
       </div>
       <div className="relative">
-        <button
+      <button
           onClick={toggleDropdown}
-          className="flex items-center text-gray-8000 focus:outline-none"
+          className="flex items-center text-gray-800 focus:outline-none"
         >
           {userInfo ? (
             <span className="text-white">{userInfo.username}</span>
           ) : (
             <></>
           )}
-
           {userInfo && (
             <svg
-              xmlns="http:/www.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
               className={`h-4 w-4 ml-1 ${
                 dropdownOpen ? "transform rotate-180" : ""
               }`}
@@ -110,12 +109,11 @@ const Navigation = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7-7-7"}
+                d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
               />
             </svg>
           )}
         </button>
-
         {dropdownOpen && userInfo && (
           <ul
             className={`absoulte right-0 mt-2 mr-14 space-y-2 bg-white text-gray-600 ${
@@ -163,12 +161,16 @@ const Navigation = () => {
                   >
                     Users
                   </Link>
+                  </li>
+                  <li>
                   <Link
                     to="/admin/profile"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Profile
                   </Link>
+                  </li>
+                  <li>
                   <Link
                     to="/admin/logout"
                     onClick={logoutHandler}
@@ -177,26 +179,27 @@ const Navigation = () => {
                     Logout
                   </Link>
                 </li>
-              </>
-            )}
-            {userInfo && (
-              <>
-                   <Link
-                    to="/admin/profile"
+                </>
+              )}
+                <li>
+                <Link
+                    to="/profile"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Profile
                   </Link>
-                  <Link
-                    to="/admin/logout"
+                </li>
+                <li>
+                <Link
+                    to="/logout"
                     onClick={logoutHandler}
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Logout
                   </Link>
-                
-              </>
-            )}
+                </li>
+        
+      
           </ul>
         )}
       </div>
