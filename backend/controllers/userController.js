@@ -71,8 +71,13 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
 /// Get All Users
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
+      try {
+       const users = await User.find({})
+       res.json(users)
+      } catch (error) {
+        console.log(error)
+        res.status(404).json({error: 'internal server error'})
+      }
 });
 
 /// Get Profile
