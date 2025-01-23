@@ -10,14 +10,14 @@ import {
   getUserById,
   updateUserById
 } from "../controllers/userController.js";
-import { authenticate, authorizeAdmin } from "../middleware/authMiddleware.js";
+import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
   .post(createUser)
-  .get(authenticate, authorizeAdmin, getAllUsers);
+  .get( getAllUsers);
 
   http://localhost:5000/api/users/auth
 router.post("/auth", loginUser);

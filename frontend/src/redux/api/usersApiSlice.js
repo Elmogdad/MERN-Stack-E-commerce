@@ -1,6 +1,6 @@
 import { apiSlice } from "./apiSlice";
 import { USERS_URL } from "../constants";
-import { logout } from "../features/auth/authSlice";
+
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -37,7 +37,7 @@ profile: builder.mutation({
 
 getUsers: builder.query({
    query: () => ({
-    url : USERS_URL,
+    url : `${USERS_URL}/users`
    }),
    providesTags: ['User'],
    keepUnusedDataFor: 5,
