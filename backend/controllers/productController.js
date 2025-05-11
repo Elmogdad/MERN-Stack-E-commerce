@@ -1,5 +1,5 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
-import Product from "../models/productModel.js";
+import Product from "../models/productModel.js"
 
 ////--------- --- ADD PRODUCT --------------
 
@@ -141,42 +141,71 @@ const fetchAllProducts = asyncHandler(async (req, res) => {
 
 const addProductReview = asyncHandler(async (req, res) => {
     try {
+        const { rating, comment } = req.body;
 
-        const {rating , comment} = req.body;3
-
-        const product = await Product.findById(req.params.id)
+        const product = await Product.findById(req.params.id);
 
         if (product) {
-
-            const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString)
+            const alreadyReviewed = product.reviews.find(
+                (r) => r.user.toString() === req.user._id.toString()
+            );
 
             if (alreadyReviewed) {
-                res.status(400)
-                throw new Error("Product already reviewed")
+                res.status(400);
+                throw new Error("Product already reviewed");
             }
 
             const review = {
-                name : req.user.username, 
-                rating : Number(rating),
+                name: req.user.username,
+                rating: Number(rating),
                 comment,
-                user: req.user._id
-            }
+                user: req.user._id,
+            };
 
-            product.review.push(review)
-            product.numReviews = product.reviews.lenght
+            product.reviews.push(review);
+            product.numReviews = product.reviews.length;
 
-            product.rating = product.reviews.reduce((acc, item) => item.rating + acc , 0) / product.reviews.lenght
+            product.rating =
+                product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+                product.reviews.length;
 
-
-            await product.save()
-            res.status(201).json({message : "Rview "})
+            await product.save();
+            res.status(201).json({ message: "Review added" });
+        } else {
+            res.status(404);
+            throw new Error("Product not found");
         }
-
     } catch (error) {
-        console.error(error)
-        res.status(400).json(error.maessage);
+        console.error(error);
+        res.status(400).json({ message: error.message });
     }
+});
+
+
+const fetchTopProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+    res.json(products); 
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message }); 
+  }
+});
+
+
+//---- ----- Fetch New Products --------------------//////
+
+const fetchNewProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await Product.find().sort({ _id: -1}).limit(5);
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message });
+
+  }
 })
+
 
 export {
   addProduct,
@@ -185,5 +214,7 @@ export {
   fetchProduct,
   fetchProductById,
   fetchAllProducts,
-  addProductReview
+  addProductReview,
+ fetchTopProducts,
+ fetchNewProducts,
 };
